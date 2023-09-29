@@ -1,13 +1,30 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ভূমি মাপন</title>
-  </head>
-  <body class="bg-gradient-to-tr bg-blue-100">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="/manifest.json" />
+  <title>ভূমি মাপন</title>
+</head>
+
+<body class="bg-gradient-to-tr bg-blue-100">
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+  <script>
+    let deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      // Prevent the default browser install prompt
+      event.preventDefault();
+      // Store the event to use it later when the user decides to install
+      deferredPrompt = event;
+      // Display your own install button or message
+      showInstallButton();
+    });
+
+  </script>
+</body>
+
 </html>
