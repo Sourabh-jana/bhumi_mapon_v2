@@ -1,5 +1,7 @@
 import { Select, Option, Typography, Input } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
+import updateData from "./utils/updateData";
+import units from "./constants";
 
 export default function App() {
   const [fromData, setFromData] = useState(0);
@@ -9,9 +11,7 @@ export default function App() {
   const [toUnit, setToUnit] = useState("squarefoot");
 
   useEffect(() => {
-    // console.log(fromData, fromUnit, toData, toUnit);
     const toValue = updateData(fromUnit, fromData, toUnit);
-    // console.log(toValue);
     setToData(toValue);
   }, [fromUnit, fromData, toUnit]);
 
@@ -35,9 +35,11 @@ export default function App() {
           onChange={(value) => setFromUnit(value ? value : fromUnit)}
           className="text-lg"
         >
-          <Option value="acre">একর</Option>
-          <Option value="bigha">বিঘা</Option>
-          <Option value="katha">কাঠা</Option>
+          {units.map((unit, ind) => (
+            <Option key={ind} value={unit.label}>
+              {unit.title}
+            </Option>
+          ))}
         </Select>
         <Input
           label="উৎস মান"
@@ -74,9 +76,11 @@ export default function App() {
           onChange={(value) => setToUnit(value ? value : toUnit)}
           className="text-lg"
         >
-          <Option value="bigha">বিঘা</Option>
-          <Option value="katha">কাঠা</Option>
-          <Option value="squarefoot">বর্গ ফুট</Option>
+          {units.map((unit, ind) => (
+            <Option key={ind} value={unit.label}>
+              {unit.title}
+            </Option>
+          ))}
         </Select>
 
         <div
@@ -92,40 +96,4 @@ export default function App() {
       </div>
     </div>
   );
-}
-
-function updateData(
-  sourceUnit: string,
-  sourceValue: number,
-  targetUnit: string
-) {
-  let sourceInSqft = 0;
-
-  switch (sourceUnit) {
-    case "acre":
-      sourceInSqft = sourceValue * 43560;
-      break;
-    case "bigha":
-      sourceInSqft = sourceValue * 14400;
-      break;
-    case "katha":
-      sourceInSqft = sourceValue * 720;
-      break;
-  }
-
-  let result = 0;
-
-  switch (targetUnit) {
-    case "bigha":
-      result = parseFloat((sourceInSqft / 14400).toFixed(4));
-      break;
-    case "katha":
-      result = parseFloat((sourceInSqft / 720).toFixed(4));
-      break;
-    case "squarefoot":
-      result = parseFloat(sourceInSqft.toFixed(4));
-      break;
-  }
-
-  return result;
 }
