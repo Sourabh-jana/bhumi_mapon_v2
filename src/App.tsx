@@ -1,5 +1,3 @@
-"use client";
-import "./App.css";
 import { Select, Option, Typography, Input } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
 
@@ -11,73 +9,85 @@ export default function App() {
   const [toUnit, setToUnit] = useState("squarefoot");
 
   useEffect(() => {
-    console.log(fromData, fromUnit, toData, toUnit);
+    // console.log(fromData, fromUnit, toData, toUnit);
     const toValue = updateData(fromUnit, fromData, toUnit);
-    console.log(toValue);
+    // console.log(toValue);
     setToData(toValue);
   }, [fromUnit, fromData, toUnit]);
 
   return (
-    <div className="flex flex-col px-6 py-10 bg-white items-center rounded-2xl shadow-lg">
+    <div className="flex flex-col m-3 px-6 py-8 bg-white items-center rounded-2xl shadow-lg">
       <Typography
         variant="h1"
         color="blue"
         textGradient
-        className="mb-3 p-3 font-sans font-semibold text-center"
+        className="mb-8 pt-1 font-sans font-semibold text-center"
       >
         ভূমি মাপন
       </Typography>
-      <div className="flex flex-col">
-        <div className="flex flex-col mt-4 gap-3">
-          <Select
-            label={fromUnit.toUpperCase()}
-            value={fromUnit}
-            color="blue"
-            size="lg"
-            onChange={(value) => setFromUnit(value ? value : fromUnit)}
-            className="text-lg"
+      <div className="flex flex-col gap-3 items-center">
+        <Select
+          title="Source Area Unit"
+          label={fromUnit.toUpperCase()}
+          value={fromUnit}
+          color="blue"
+          size="lg"
+          onChange={(value) => setFromUnit(value ? value : fromUnit)}
+          className="text-lg"
+        >
+          <Option value="acre">একর</Option>
+          <Option value="bigha">বিঘা</Option>
+          <Option value="katha">কাঠা</Option>
+        </Select>
+        <Input
+          label="উৎস মান"
+          size="lg"
+          type="number"
+          color="blue"
+          crossOrigin={undefined}
+          title="Source Area Value"
+          onChange={(e) => setFromData(Number(e.target.value))}
+          className="text-xl"
+        />
+        <div className="w-full flex justify-center my-0 text-gray-600">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 22 22"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-4 h-4"
           >
-            <Option value="acre">একর</Option>
-            <Option value="bigha">বিঘা</Option>
-            <Option value="katha">কাঠা</Option>
-          </Select>
-          <Input
-            label="উৎস মান"
-            size="lg"
-            type="number"
-            color="blue"
-            crossOrigin={undefined}
-            value={fromData}
-            onChange={(e) => setFromData(Number(e.target.value))}
-            className="text-lg"
-          />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
+            />
+          </svg>
         </div>
+        <Select
+          title="Target Area Unit"
+          label={toUnit.toUpperCase()}
+          value={toUnit}
+          size="lg"
+          color="blue"
+          onChange={(value) => setToUnit(value ? value : toUnit)}
+          className="text-lg"
+        >
+          <Option value="bigha">বিঘা</Option>
+          <Option value="katha">কাঠা</Option>
+          <Option value="squarefoot">বর্গ ফুট</Option>
+        </Select>
 
-        <hr className="my-8 border-blue-1 00 border-dashed" />
-        
-        <div className="flex flex-col gap-3">
-          <Select
-            label={toUnit.toUpperCase()}
-            value={toUnit}
-            size="lg"
-            color="blue"
-            onChange={(value) => setToUnit(value ? value : toUnit)}
-            className="text-lg"
-          >
-            <Option value="bigha">বিঘা</Option>
-            <Option value="katha">কাঠা</Option>
-            <Option value="squarefoot">বর্গ ফুট</Option>
-          </Select>
-          <Input
-            type="number"
-            label="লক্ষ্য মান"
-            size="lg"
-            color="blue"
-            crossOrigin={undefined}
-            value={toData}
-            onChange={(e) => setToData(Number(e.target.value))}
-            className="text-lg"
-          />
+        <div
+          className="text-center mt-4 border rounded-lg w-fit px-2 py-1"
+          title="Answer"
+        >
+          <span className="text-3xl">{toData.toString().split(".")[0]}</span>
+          <span className="text-gray-500">
+            {toData.toString().split(".")[1] && "."}
+            {toData.toString().split(".")[1]}
+          </span>
         </div>
       </div>
     </div>
@@ -107,13 +117,13 @@ function updateData(
 
   switch (targetUnit) {
     case "bigha":
-      result = parseFloat((sourceInSqft / 14400).toFixed(3));
+      result = parseFloat((sourceInSqft / 14400).toFixed(4));
       break;
     case "katha":
-      result = parseFloat((sourceInSqft / 720).toFixed(3));
+      result = parseFloat((sourceInSqft / 720).toFixed(4));
       break;
     case "squarefoot":
-      result = parseFloat(sourceInSqft.toFixed(3));
+      result = parseFloat(sourceInSqft.toFixed(4));
       break;
   }
 
